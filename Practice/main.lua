@@ -5,6 +5,8 @@ local json = require("json")
 local currentLatitude = 0
 local currentLongitude = 0
 
+local testMode = true
+
 display.setStatusBar( display.HiddenStatusBar )
 
 display.setDefault( "anchorX", 0.0 )	-- default to Left anchor point
@@ -66,10 +68,6 @@ end
 
 function print_r(arr, indentLevel)
     local str = {}
-    local indentStr = "#"
-
-    
-
 
     for index,value in pairs(arr) do
             str[index] = value
@@ -90,10 +88,13 @@ local function networkListener( event )
 		-- Status with capital S is checked for cases where no data is returned at all
 		if t.Status == nil then
 			--if this table does not exist, then data should exist
-			print(t.geoLocation)
-			print(t.stations)
-			print(t.status)
-			print("--------------------")
+			
+			if testMode == true then
+				print(t.geoLocation)
+				print(t.stations)
+				print(t.status)
+				print("--------------------")
+			end
 			
 			-- Go through the array in a loop
 			for key, value in pairs(t.stations) do
@@ -135,7 +136,7 @@ end
 Runtime:addEventListener( "location", locationHandler )
 
 
-local gas_call = "http://api.mygasfeed.com/stations/radius/" .. latitude.text .. "/" .. longitude.text .. "/1" .. "/reg/price/ik3c9jau1p.json?"
+local gas_call = "http://api.mygasfeed.com/stations/radius/" .. latitude.text .. "/" .. longitude.text .. "/2" .. "/reg/price/ik3c9jau1p.json?"
 
 
 local json_file_get = jsonFile( network.request( gas_call, "GET", networkListener ) )
